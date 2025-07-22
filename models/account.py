@@ -27,10 +27,7 @@ class Account:
     def display_account_info(self):
         print("Account information")
         print(f"Name: {self.name} Account ID: {self.account_id} Balance: {self.balance}")
-        if self.transactions:
-            self.show_transactions()  
-        else:
-            print("No transactions yet.")
+        
         print("================================")
            
 
