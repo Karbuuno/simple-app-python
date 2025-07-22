@@ -3,8 +3,8 @@
 import random
 
 class Account:
-    def __init__(self, account_id, name):
-        self.account_id=self.generate_account_number()
+    def __init__(self, name):
+        self.account_no=self.generate_account_number()
         self.name=name
         self.balance=0.0
         self.transactions=[]
@@ -26,13 +26,17 @@ class Account:
 
     def display_account_info(self):
         print("Account information")
-        print(f"Name: {self.name} Account ID: {self.account_id} Balance: {self.balance}")
+        print(f"Name: {self.name} Account ID: {self.account_no} Balance: {self.balance}")
         
         print("================================")
            
 
     def show_transactions(self):
-        for transaction in self.transactions:
-            print(transaction)
-        
+        if not self.transactions:
+            print("No transactions yet.")
+        else:
+            print("\nTransaction History:")
+            for transaction in self.transactions:
+                print(transaction)
+        print(f"Current Balance: ${self.balance}")
         
