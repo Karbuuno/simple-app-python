@@ -23,12 +23,6 @@ class Account:
             return
         self.balance-=amount
         self.transactions.append(f"Withdraw:{amount}")
-
-    def display_account_info(self):
-        print("Account information")
-        print(f"Name: {self.name} Account ID: {self.account_no} Balance: {self.balance}")
-        
-        print("================================")
            
 
     def show_transactions(self):

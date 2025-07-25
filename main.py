@@ -1,44 +1,78 @@
 from services.bank_service import Bank
 
-bank = Bank()
+def main():
+    bank = Bank()
+    logged_in_user = None
 
-while True:
-    print("\n1. Create Account\n2. Deposit\n3. Withdraw\n4. Transactions\n5. Account Details\n6. Exit")
-    choice = input("Enter your choice (1-6): ")
+    while True:
+        try:
+            print("\n=== BANKING APP ===")
+            if logged_in_user:
+                print(f"Logged in as: {logged_in_user.username}")
+            print("1. Register")
+            print("2. Login")
+            print("3. Deposit")
+            print("4. Withdraw")
+            print("5. View Transactions")
+            print("6. Account Details")
+            print("7. Logout")
+            print("8. Exit")
 
-    try:
-        if choice == "1":
-            name = input("Enter your name: ")
-            bank.create_account(name)
+            choice = input("Choose an option: ")
 
-        elif choice in ["2", "3", "4", "5"]:
-            acc_no = int(input("Enter your account number: "))
-            found_account = bank.find_account(acc_no)
+            if choice == "1":
+                name = input("Enter full name: ")
+                username = input("Choose a username: ")
+                password = input("Choose a password: ")
+                user = bank.register_user(name, username, password)
+                if user:
+                    logged_in_user = user
 
-            if not found_account:
-                print(f"Account with account number {acc_no} not found.")
-                continue
+            elif choice == "2":
+                username = input("Enter username: ")
+                password = input("Enter password: ")
+                logged_in_user = bank.login_user(username, password)
 
-            if choice == "2":
-                amount = float(input("Enter the amount to deposit: "))
-                found_account.deposit(amount)
+            elif choice in ["3", "4", "5", "6"]:
+                if not logged_in_user:
+                    print("Please login first.")
+                    continue
 
-            elif choice == "3":
-                amount = float(input("Enter the amount to withdraw: "))
-                found_account.withdraw(amount)
+                account = logged_in_user.account
 
-            elif choice == "4":
-                found_account.show_transactions()
+                if choice == "3":
+                    try:
+                        amount = float(input("Enter amount to deposit: "))
+                        account.deposit(amount)
+                    except ValueError:
+                        print("❌ Invalid amount. Please enter a number.")
 
-            elif choice == "5":
-                found_account.display_account_info()
+                elif choice == "4":
+                    try:
+                        amount = float(input("Enter amount to withdraw: "))
+                        account.withdraw(amount)
+                    except ValueError:
+                        print("❌ Invalid amount. Please enter a number.")
 
-        elif choice == "6":
-            print("Exiting...")
-            break
+                elif choice == "5":
+                    account.show_transactions()
 
-        else:
-            print("Invalid choice. Please select between 1 and 6.")
+                elif choice == "6":
+                    bank.user_profile(logged_in_user)
 
-    except ValueError:
-        print("Invalid input. Please enter correct data.")
+            elif choice == "7":
+                logged_in_user = None
+                print("✅ Logged out.")
+
+            elif choice == "8":
+                print("👋 Thanks for using the banking app!")
+                break
+
+            else:
+                print("❌ Invalid option. Please choose from 1–8.")
+        
+        except Exception as e:
+            print(f"❌ An unexpected error occurred: {str(e)}")
+
+if __name__ == "__main__":
+    main()
